@@ -1,0 +1,23 @@
+local function commands(miner)
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:turnRight()
+    miner:forward()
+    miner:turnRight()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+    miner:forward()
+end
+
+return commands

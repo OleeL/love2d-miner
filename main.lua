@@ -1,12 +1,14 @@
 local grid = require("grid")
 local miner = require("miner")
 local keyboard = require("keyboard")
+local miner_commands = require("miner_commands")
 
 function love.load()
     keyboard:load()
     grid:load()
     miner:load()
     love.graphics.setBackgroundColor(0.1, 0.1, 0.1)
+    miner_commands(miner)
 end
 
 function love.draw()
@@ -15,6 +17,7 @@ function love.draw()
 end
 
 function love.update(dt)
+    miner:update(dt)
     keyboard:isPressed({ "w", "up" }, function()
         miner:forward()
     end)

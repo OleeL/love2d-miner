@@ -14,6 +14,9 @@ local direction = {
 function miner:load()
     self.position = { x = 8, y = 8 }
     self.direction = direction.up
+    self.commandQueue = {}
+    self.timer = 0
+    self.commandInterval = 0.2
 end
 
 function miner:draw()
@@ -38,42 +41,60 @@ function miner:draw()
 end
 
 function miner:forward()
-    if self.direction == direction.right then
-        self.position.x = self.position.x + 1
-    elseif self.direction == direction.down then
-        self.position.y = self.position.y + 1
-    elseif self.direction == direction.left then
-        self.position.x = self.position.x - 1
-    elseif self.direction == direction.up then
-        self.position.y = self.position.y - 1
-    end
+    table.insert(self.commandQueue, function()
+        if self.direction == direction.right then
+            self.position.x = self.position.x + 1
+        elseif self.direction == direction.down then
+            self.position.y = self.position.y + 1
+        elseif self.direction == direction.left then
+            self.position.x = self.position.x - 1
+        elseif self.direction == direction.up then
+            self.position.y = self.position.y - 1
+        end
+    end)
 end
 
 function miner:back()
-    if self.direction == direction.right then
-        self.position.x = self.position.x - 1
-    elseif self.direction == direction.down then
-        self.position.y = self.position.y - 1
-    elseif self.direction == direction.left then
-        self.position.x = self.position.x + 1
-    elseif self.direction == direction.up then
-        self.position.y = self.position.y + 1
-    end
+    table.insert(self.commandQueue, function()
+        if self.direction == direction.right then
+            self.position.x = self.position.x - 1
+        elseif self.direction == direction.down then
+            self.position.y = self.position.y - 1
+        elseif self.direction == direction.left then
+            self.position.x = self.position.x + 1
+        elseif self.direction == direction.up then
+            self.position.y = self.position.y + 1
+        end
+    end)
 end
 
 function miner:turnLeft()
-    self.direction = (self.direction - 1) % 4
-    if self.direction < 0 then
-        self.direction = direction.up
-    end
+    table.insert(self.commandQueue, function()
+        self.direction = (self.direction - 1) % 4
+        if self.direction < 0 then
+            self.direction = direction.up
+        end
+    end)
 end
 
 function miner:turnRight()
-    self.direction = (self.direction + 1) % 4
+    table.insert(self.commandQueue, function()
+        self.direction = (self.direction + 1) % 4
+    end)
 end
 
-function miner:programme(script)
-    script(self)
+function miner:update(dt)
+    self.timer = self.timer + dt
+
+
+    if self.timer >= self.commandInterval then
+        self.timer = self.timer - self.commandInterval
+
+        if #self.commandQueue > 0 then
+            local command = table.remove(self.commandQueue, 1)
+            command()
+        end
+    end
 end
 
 return miner
