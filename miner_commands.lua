@@ -1,23 +1,10 @@
-local function commands(miner)
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:turnRight()
-    miner:forward()
-    miner:turnRight()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
-    miner:forward()
+-- turtle.forward()
+-- turtle.back()
+-- turtle.turnLeft()
+-- turtle.turnRight()
+
+local function commands(turtle)
+    -- code here
 end
 
 return commands
