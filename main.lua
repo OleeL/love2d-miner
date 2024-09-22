@@ -1,33 +1,49 @@
 local grid = require("grid")
-local miner = require("miner")
+local turtle = require("turtle")
 local keyboard = require("keyboard")
-local miner_commands = require("miner_commands")
+local turtle_commands = require("turtle_commands")
 
 function love.load()
+    -- Enable debugger
+    DebugMode = false
+    if arg[2] == "debug" then
+        require("lldebugger").start()
+        DebugMode = true
+    end
     keyboard:load()
     grid:load()
-    miner:load()
+    turtle:load()
     love.graphics.setBackgroundColor(0.1, 0.1, 0.1)
-    miner_commands(miner)
+    turtle_commands(turtle)
 end
 
 function love.draw()
     grid:draw()
-    miner:draw()
+    turtle:draw()
 end
 
 function love.update(dt)
-    miner:update(dt)
+    turtle:update(dt)
     keyboard:isPressed({ "w", "up" }, function()
-        miner:forward()
+        turtle:forward()
     end)
     keyboard:isPressed({ "s", "down" }, function()
-        miner:back()
+        turtle:back()
     end)
     keyboard:isPressed({ "a", "left" }, function()
-        miner:turnLeft()
+        turtle:turnLeft()
     end)
     keyboard:isPressed({ "d", "right" }, function()
-        miner:turnRight()
+        turtle:turnRight()
     end)
+end
+
+
+local loveErrorhandler = love.errorhandler or love.errhand
+function love.errorhandler(msg)
+    if DebugMode then
+        error(msg, 2)
+    else
+        return loveErrorhandler(msg)
+    end
 end

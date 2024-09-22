@@ -2,7 +2,7 @@ local constants = require("constants")
 
 local cellSize = constants.game.cellSize
 
-local miner = {}
+local turtle = {}
 
 local direction = {
     right = 0,
@@ -11,15 +11,15 @@ local direction = {
     up = 3,
 }
 
-function miner:load()
+function turtle:load()
     self.position = { x = 8, y = 8 }
     self.direction = direction.up
     self.commandQueue = {}
     self.timer = 0
-    self.commandInterval = 0.2
+    self.commandInterval = 0.5
 end
 
-function miner:draw()
+function turtle:draw()
     local x = self.position.x * cellSize
     local y = self.position.y * cellSize
     love.graphics.setColor(255, 0, 0, 255)
@@ -40,7 +40,7 @@ function miner:draw()
     love.graphics.pop()
 end
 
-function miner:forward()
+function turtle:forward()
     table.insert(self.commandQueue, function()
         if self.direction == direction.right then
             self.position.x = self.position.x + 1
@@ -54,7 +54,7 @@ function miner:forward()
     end)
 end
 
-function miner:back()
+function turtle:back()
     table.insert(self.commandQueue, function()
         if self.direction == direction.right then
             self.position.x = self.position.x - 1
@@ -68,7 +68,7 @@ function miner:back()
     end)
 end
 
-function miner:turnLeft()
+function turtle:turnLeft()
     table.insert(self.commandQueue, function()
         self.direction = (self.direction - 1) % 4
         if self.direction < 0 then
@@ -77,13 +77,13 @@ function miner:turnLeft()
     end)
 end
 
-function miner:turnRight()
+function turtle:turnRight()
     table.insert(self.commandQueue, function()
         self.direction = (self.direction + 1) % 4
     end)
 end
 
-function miner:update(dt)
+function turtle:update(dt)
     self.timer = self.timer + dt
 
 
@@ -97,4 +97,4 @@ function miner:update(dt)
     end
 end
 
-return miner
+return turtle
